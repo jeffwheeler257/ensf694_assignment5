@@ -11,15 +11,11 @@
 AVLTree::AVLTree() : root(nullptr), cursor(nullptr){}
 
 int AVLTree::height(const Node* N) {
-    // Student must complete and if necessary change the return value of 
-    // this function this function
-    return 0;
+    return N->height;
 }
 
 int AVLTree::getBalance(Node* N) {
-    // Student must complete and if necessary change the return value of 
-    // this function this function
-    return 0;
+    return (N->right->height - N->left->height);
 }
 
 Node* AVLTree::rightRotate(Node* y) {
@@ -41,38 +37,45 @@ void AVLTree::insert(int key, Type value) {
 // Recursive function
  Node* AVLTree::insert(Node* node, int key, Type value, Node* parent) {
     if (node == nullptr){ // setup initial root node
-        Node* new_node = new Node(key, value, node);
-        if (new_node->parent != nullptr)
-            new_node->parent->height++;
-        return new_node;
+        return new Node(key, value, node);
     }
-    else if (key > node->data.key){
-        Node* new_node = insert(node->right, key, value, node);
-        if (this->getBalance(new_node) == 2){
-            if(new_node->data.key < node->parent->data.key){
-                leftRotate(node);
-                rightRotate(node->parent); // make sure root is changed within the function
-                return root;
-            }
-            leftRotate(node->parent);
-            return root;
+    else if (key < node->data.key){ // insert lower key value to left
+        node->left = insert(node->left, key, value, node);
+    }
+    else if (key > node->data.key){ // insert higher key value to right
+        node->right = insert(node->right, key, value, node);
+    }
+
+    // adjust height of node
+    if (height(node->left) > height(node->right)){
+        node->height = height(node->left) + 1;
+    }
+    else if (height(node->left) < height(node->right)){
+        node->height = height(node->right) + 1;
+    }
+    // else height stays the same
+
+    // check 4 cases
+    if (getBalance(node) == -2){ 
+        if (key < node->left->data.key) { //LL
+            //rotate node right
+            //return node
         }
-        return root;
-    }
-    else if (key < node->data.key){
-        Node* new_node = insert(node->left, key, value, node);
-        if (this->getBalance(new_node) == 2){
-            if(new_node->data.key > node->parent->data.key){
-                rightRotate(node);
-                leftRotate(node->parent); // make sure root is changed within the function
-                return root;
-            }
-            rightRotate(node->parent);
-            return root;
+         // LR
+         // rotate node->left left
+         // rotate node right
+         // return node
+    } 
+    else if (getBalance(node) == 2){
+        if (key > node->data.key){ // RR
+            // rotate node left
+            // return node
         }
-        return root;
+        // RL
+        // rotate node->right right 
+        // rotate node left
+        // return node
     }
-    return nullptr; // not sure if needed
  }
 
 // Recursive function
@@ -103,8 +106,21 @@ void AVLTree::find(int key) {
 }
 
 // Recursive funtion
-void AVLTree::find(Node* root, int key){
-    // Student must complete this function
+void AVLTree::find(Node* node, int key){
+    if (node == nullptr){
+        std::cout << "Key not found" << std::endl;
+        return;
+    }
+
+    if (key == node->data.key){
+        cursor = node;
+        return;
+    }
+    
+    if (key < node->data.key)
+        find(node->left, key);
+    else if (key > node->data.key)
+        find(node->right, key);
 }
 
 AVLTree::AVLTree(const AVLTree& other) : root(nullptr), cursor(nullptr) {
@@ -143,7 +159,7 @@ void AVLTree::destroy(Node* node) {
 const int& AVLTree::cursor_key() const{
     if (cursor != nullptr)
         return cursor->data.key;
-    else{
+    else {
         std::cout << "looks like tree is empty, as cursor == Zero.\n";
         exit(1);
     }
@@ -152,7 +168,7 @@ const int& AVLTree::cursor_key() const{
 const Type& AVLTree::cursor_datum() const{
     if (cursor != nullptr)
         return cursor->data.value;
-    else{
+    else {
         std::cout << "looks like tree is empty, as cursor == Zero.\n";
         exit(1);
     }
@@ -165,7 +181,8 @@ int AVLTree::cursor_ok() const{
 }
 
 void AVLTree::go_to_root(){
-    if(!root) cursor = root;
-    cursor = nullptr;
+    //if(!root) 
+    cursor = root;
+    // cursor = nullptr;
 }
 
