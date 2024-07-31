@@ -1,9 +1,10 @@
-//
-//  AVL tree.cpp
-//  AVL tree
-//
-//  Created by Mahmood Moussavi on 2024-05-22.
-//
+/*
+ *  AVL_tree.cpp
+ *  ENSF 694 Lab 4 - Exercise D
+ *  Created by Mahmood Moussavi
+ *  Created by Jeff Wheeler
+ *  Submission date: August 2, 2024
+ */
 
 #include "AVL_tree.h"
 
@@ -39,9 +40,39 @@ void AVLTree::insert(int key, Type value) {
 
 // Recursive function
  Node* AVLTree::insert(Node* node, int key, Type value, Node* parent) {
-     // Student must complete and if necessary change the return value of 
-     // this function this function
-     return nullptr;
+    if (node == nullptr){ // setup initial root node
+        Node* new_node = new Node(key, value, node);
+        if (new_node->parent != nullptr)
+            new_node->parent->height++;
+        return new_node;
+    }
+    else if (key > node->data.key){
+        Node* new_node = insert(node->right, key, value, node);
+        if (this->getBalance(new_node) == 2){
+            if(new_node->data.key < node->parent->data.key){
+                leftRotate(node);
+                rightRotate(node->parent); // make sure root is changed within the function
+                return root;
+            }
+            leftRotate(node->parent);
+            return root;
+        }
+        return root;
+    }
+    else if (key < node->data.key){
+        Node* new_node = insert(node->left, key, value, node);
+        if (this->getBalance(new_node) == 2){
+            if(new_node->data.key > node->parent->data.key){
+                rightRotate(node);
+                leftRotate(node->parent); // make sure root is changed within the function
+                return root;
+            }
+            rightRotate(node->parent);
+            return root;
+        }
+        return root;
+    }
+    return nullptr; // not sure if needed
  }
 
 // Recursive function

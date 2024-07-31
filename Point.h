@@ -10,7 +10,7 @@
 #include <string>
 using namespace std;
 
-class Point2 {
+class Point {
 public:
     string name;
     Point() = default;

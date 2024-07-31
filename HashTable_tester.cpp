@@ -33,7 +33,7 @@ void read_flight_info (int argc, char** argv, vector<Flight>& records){
         cerr << "Usage: hashtable input.txt" << endl;
         exit(1);
     }
-    string fileName = "/Users/mahmoodmoussavi/Dropbox/Data Structue Code/Flight Hash Table Using Linked List/Flight Hash Table Using Linked List/";
+    string fileName = "C:/Users/jeffw/Documents/_Software Masters/ENSF 694/ensf694_assignment5/";
     fileName+= string(argv[1]);
     ifstream inputFile;
     inputFile.open(fileName.c_str());
@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
     read_flight_info (argc, argv, records);
 
     unsigned int tableSize = (int) records.size() / 2; // Example initial table size (ensure less than 50% load)
-    
+
     HashTable hashTable(tableSize);
     
     // First pass: Insert records into their desired slots if empty
@@ -81,6 +81,7 @@ int main(int argc, char* argv[]) {
         hashTable.insertSecondPass(record);
     }
     
+
     // Calculate packing density and hash efficiency
     double packingDensity = hashTable.calculatePackingDensity();
     double hashEfficiency = hashTable.calculateHashEfficiency();

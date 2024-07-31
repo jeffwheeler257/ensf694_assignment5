@@ -5,7 +5,7 @@
 //  Created by Mahmood Moussavi on 2024-05-25.
 //
 
-#include "Point2.h"
+#include "Point.h"
 
 #include <string>
 

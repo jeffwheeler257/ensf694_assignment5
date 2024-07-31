@@ -5,8 +5,8 @@
 //  Created by Mahmood Moussavi on 2024-05-25.
 //
 
-#ifndef List_hpp
-#define List_hpp
+#ifndef List_h
+#define List_h
 #include "Flight.h"
 #include "Node.h"
 

@@ -5,9 +5,9 @@
 //  Created by Mahmood Moussavi on 2024-05-25.
 //
 
-#ifndef Flight_hpp
-#define Flight_hpp
-#include "Point2.h"
+#ifndef Flight_h
+#define Flight_h
+#include "Point.h"
 
 // Flight class to represent a flight
 class Flight {
