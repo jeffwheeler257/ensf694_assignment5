@@ -13,7 +13,7 @@ unsigned int HashTable::hashFunction(const string &flightNumber) const {
     for (int i = 0; i < int(flightNumber.size()); i++){
         hash_number += int(flightNumber[i]);
     }
-    hash_number = ((67*hash_number + 41)%101);
+    hash_number = ((67 * hash_number + 41) % 101);
     return hash_number % this->tableSize;
 }
 
@@ -61,7 +61,7 @@ Flight* HashTable::search(const string &flightNumber) const{
     
 double HashTable::calculatePackingDensity() const{
     if (tableSize > 0)
-        return double(firstPassRecords)/tableSize;
+        return double(numberOfRecords)/tableSize;
     return -1.0;
 }
     
