@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <climits>
 #include <string>
+#include <cmath>
+#include <iomanip>
 
 using namespace std;
 
@@ -61,6 +63,7 @@ public:
     void readFromFile(const string& filename);
     void printAllShortestPaths(const char start, bool weighted);
     void printPath(Vertex* dest);
+    void traverse(int k);
 private:
     Vertex* head; // beginning of the list of vertices
     Vertex* tail;

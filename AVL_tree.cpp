@@ -2,7 +2,7 @@
  *  AVL_tree.cpp
  *  ENSF 694 Lab 5 - Exercise B
  *  Created by Mahmood Moussavi
- *  Created by Jeff Wheeler
+ *  Completed by Jeff Wheeler
  *  Submission date: August 2, 2024
  */
 

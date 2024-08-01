@@ -1,3 +1,11 @@
+/*
+ *  graph.cpp.cpp
+ *  ENSF 694 Lab 5 - Exercise C
+ *  Created by Mahmood Moussavi
+ *  Completed by Jeff Wheeler
+ *  Submission date: August 2, 2024
+ */
+
 #include "graph.h"
 
 PriorityQueue::PriorityQueue() : front(nullptr) {}
@@ -86,11 +94,57 @@ void Graph::clearAll() {
 }
 
 void Graph::dijkstra(const char start) {
-// STUDENTS MUST COMPLETE THE DEFINITION OF THIS FUNCTION
+    Vertex* s = getVertex(start);
+    
+    Vertex* traverse = head;
+    while (traverse != nullptr){
+        traverse->reset();
+        traverse = traverse->next;
+    }
+    
+    PriorityQueue q;
+    q.enqueue(s);
+    s->dist = 0;
+    double new_dist;
+    while(!q.isEmpty()){
+        Vertex* v = q.dequeue();
+        for (Edge* edge = v->adj; edge != nullptr; edge = edge->next){
+            Vertex* w = edge->des;
+            new_dist = v->dist + edge->cost;
+            if (new_dist < w->dist){
+                w->dist = new_dist;
+                w->prev = v;
+                q.enqueue(w);
+            }
+        }
+    }
+
+
 }
 
 void Graph::unweighted(const char start) {
-// STUDENTS MUST COMPLETE THE DEFINITION OF THIS FUNCTION
+    Vertex* s = getVertex(start);
+    
+    Vertex* traverse = head;
+    while (traverse != nullptr){
+        traverse->reset();
+        traverse = traverse->next;
+    }
+
+    PriorityQueue q;
+    q.enqueue(s);
+    s->dist = 0;
+    while(!q.isEmpty()){
+        Vertex* v = q.dequeue();
+        for (Edge* edge = v->adj; edge != nullptr; edge = edge->next){
+            Vertex* w = edge->des;
+            if (w->dist == INFINITY){
+                w->dist = v->dist + 1;
+                w->prev = v;
+                q.enqueue(w);
+            }
+        }
+    }
 }
 
 void Graph::readFromFile(const string& filename) {
