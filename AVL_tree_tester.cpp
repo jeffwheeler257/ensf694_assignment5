@@ -13,7 +13,7 @@ int main() {
     std::cout << "Okay. Passed. " << std::endl;
 
     std::cout << "\nPrinting first_tree (In-Order) after inserting 3 nodes...\n";
-    std::cout << "It is Expected to dispaly (8001 Tim Hardy) (8002 Joe Morrison) (8004 Jack Lowis). " << std::endl;
+    std::cout << "It is Expected to display (8001 Tim Hardy) (8002 Joe Morrison) (8004 Jack Lowis). " << std::endl;
     first_tree.inorder(first_tree.getRoot());
     
     // Pretend that a user is trying to find data by some keys.
@@ -54,7 +54,7 @@ int main() {
     first_tree.inorder(first_tree.getRoot());
     
     std::cout << std::endl << "\nDisplay second_tree nodes in-order: \n";
-    first_tree.inorder(second_tree.getRoot());
+    second_tree.inorder(second_tree.getRoot());
     
     std::cout << std::endl << "\nMore insersions into first_tree and second_tree" << std::endl;
     first_tree.insert(1001, "Jack");
@@ -77,13 +77,13 @@ int main() {
     
     std::cout << "\n\nValues and keys in second_tree after 3 new insersions" << std::endl;
     std::cout << "In-Order:" << std::endl;
-    first_tree.inorder(second_tree.getRoot());
+    second_tree.inorder(second_tree.getRoot());
     
     std::cout << std::endl << "Pre-Order:" << std::endl;
-    first_tree.preorder(second_tree.getRoot());
+    second_tree.preorder(second_tree.getRoot());
 
     std::cout << std::endl << "Post-Order:" << std::endl;
-    first_tree.postorder(second_tree.getRoot());
+    second_tree.postorder(second_tree.getRoot());
     std::cout << std::endl;
     
     std::cout << "\nTest Copying, using Assignment Operator..." << std::endl;

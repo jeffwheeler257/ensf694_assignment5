@@ -1,6 +1,6 @@
 /*
  *  AVL_tree.cpp
- *  ENSF 694 Lab 4 - Exercise D
+ *  ENSF 694 Lab 5 - Exercise B
  *  Created by Mahmood Moussavi
  *  Created by Jeff Wheeler
  *  Submission date: August 2, 2024
@@ -11,33 +11,67 @@
 AVLTree::AVLTree() : root(nullptr), cursor(nullptr){}
 
 int AVLTree::height(const Node* N) {
+    if (N == nullptr)
+        return 0;
     return N->height;
 }
 
 int AVLTree::getBalance(Node* N) {
-    return (N->right->height - N->left->height);
+    return (height(N->right) - height(N->left));
 }
 
-Node* AVLTree::rightRotate(Node* y) {
-    // Student must complete and if necessary change the return value of 
-    // this function this function
-    return nullptr;
- }
+Node* AVLTree::rightRotate(Node* node) {
+    Node* pivot = node->left;
+    
+    node->left = pivot->right;
+    if (pivot->right != nullptr)
+        pivot->right->parent = node;    
+    
+    if (node->parent == nullptr)
+        root = pivot;
+    else if (node->parent->right == node)
+        node->parent->right = pivot;
+    else if (node->parent->left == node)
+        node->parent->left = pivot;
+    
+    pivot->parent = node->parent;
+    pivot->right = node;
+    node->parent = pivot;
+    node->height = 1;
+    pivot->height = 2;
+    return pivot;
+}
 
- Node* AVLTree::leftRotate(Node* x) {
-     // Student must complete and if necessary change the return value of 
-     // this function this function
-     return nullptr;
- }
+Node* AVLTree::leftRotate(Node* node) {
+    Node* pivot = node->right;
+
+    node->right = pivot->left;
+    if (pivot->left != nullptr)
+        pivot->left->parent = node;
+
+    if (node->parent == nullptr)
+        root = pivot;
+    else if (node->parent->right == node)
+        node->parent->right = pivot;
+    else if (node->parent->left == node)
+        node->parent->left = pivot;
+
+    pivot->parent = node->parent;
+    pivot->left = node;
+    node->parent = pivot;   
+    node->height = 1;
+    pivot->height = 2;
+    return pivot;
+}
 
 void AVLTree::insert(int key, Type value) {
     root = insert(root, key, value, nullptr);
 }
 
 // Recursive function
- Node* AVLTree::insert(Node* node, int key, Type value, Node* parent) {
+Node* AVLTree::insert(Node* node, int key, Type value, Node* parent) {
     if (node == nullptr){ // setup initial root node
-        return new Node(key, value, node);
+        return new Node(key, value, parent);
     }
     else if (key < node->data.key){ // insert lower key value to left
         node->left = insert(node->left, key, value, node);
@@ -55,42 +89,57 @@ void AVLTree::insert(int key, Type value) {
     }
     // else height stays the same
 
-    // check 4 cases
+    // 4 cases
     if (getBalance(node) == -2){ 
-        if (key < node->left->data.key) { //LL
-            //rotate node right
-            //return node
+        // LL
+        if (key < node->left->data.key) {
+            return rightRotate(node);
         }
          // LR
-         // rotate node->left left
-         // rotate node right
-         // return node
+         node->left = leftRotate(node->left);
+         return rightRotate(node);
     } 
     else if (getBalance(node) == 2){
-        if (key > node->data.key){ // RR
-            // rotate node left
-            // return node
+        // RR
+        if (key > node->data.key){
+            return leftRotate(node);
         }
         // RL
-        // rotate node->right right 
-        // rotate node left
-        // return node
+        node->right = rightRotate(node->right);
+        return leftRotate(node);
     }
- }
+
+    return node;
+}
 
 // Recursive function
 void AVLTree::inorder(const Node* root) {
-    // Student must complete this function
+    if (root == nullptr){
+        return;
+    }
+    inorder(root->left);
+    std::cout << "(" << root->data.key << " " << root->data.value << ")" << std::endl;
+    inorder(root->right);
 }
 
 // Recursive function
 void AVLTree::preorder(const Node* root) {
-    // Student must complete this function
+    if (root == nullptr){
+        return;
+    }
+    std::cout << "(" << root->data.key << " " << root->data.value << ")" << std::endl;
+    preorder(root->left);
+    preorder(root->right);
 }
 
 // Recursive function
 void AVLTree::postorder(const Node* root) {
-    // Student must complete this function
+    if (root == nullptr){
+        return;
+    }
+    postorder(root->left);
+    postorder(root->right);
+    std::cout << "(" << root->data.key << " " << root->data.value << ")" << std::endl;
 }
 
 const Node* AVLTree::getRoot(){
@@ -108,7 +157,6 @@ void AVLTree::find(int key) {
 // Recursive funtion
 void AVLTree::find(Node* node, int key){
     if (node == nullptr){
-        std::cout << "Key not found" << std::endl;
         return;
     }
 
@@ -142,8 +190,15 @@ AVLTree& AVLTree::operator=(const AVLTree& other) {
 
 // Recursive funtion
 Node* AVLTree::copy(Node* node, Node* parent) {
-    // Student must complete and if necessary change the return value of this function this function
-    return nullptr;
+    if (node == nullptr)
+        return nullptr;
+    
+    Node* new_node = new Node(node->data.key, node->data.value, parent);
+    new_node->height = node->height;
+
+    new_node->left = copy(node->left, new_node);
+    new_node->right = copy(node->right, new_node);
+    return new_node;
 }
 
 // Recusive function
@@ -153,7 +208,7 @@ void AVLTree::destroy(Node* node) {
         destroy(node->right);
         delete node;
     }
-    // Student must complete this function
+    root = nullptr;
 }
 
 const int& AVLTree::cursor_key() const{

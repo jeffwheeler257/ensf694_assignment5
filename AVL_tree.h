@@ -25,15 +25,15 @@ class AVLTree {
 private:
     Node* root;
     Node* cursor;
-    
+
     // PROMISES: if N is not a nullptr, returns the difference bet its left and right sub-trees. Otherwise, returns 0
     int getBalance(Node* N);
 
     // PROMISES: x points to a unbalanced node.Therefor, makes a right rotation and adjusts the new heights
-    Node* rightRotate(Node* y);
+    Node* rightRotate(Node* node);
 
     // PROMISES: x points to a unbalanced node.Therefor, makes a left rotation and adjusts the new heights
-    Node* leftRotate(Node* x);
+    Node* leftRotate(Node* node);
     
     // PROMISES: adds a new node with a given key and value to the tree, maintaining the tree's properties and
     // rebalancing the tree if necessary.
@@ -41,7 +41,7 @@ private:
     
     void find(Node* root, int key);
 
-    // Deallocate all nodes in th tree, and set root to zero.
+    // Deallocate all nodes in the tree, and set root to zero.
     void destroy();
 
     // Establishes *this as a copy of source.  Cursor of *this will
